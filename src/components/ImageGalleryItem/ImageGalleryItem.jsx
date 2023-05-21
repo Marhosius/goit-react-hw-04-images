@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
 import css from "./ImageGalleryItem.module.css";
 import propTypes from 'prop-types';
-export class ImageGalleryItem extends Component {
-    onImgClick = ({ target: { attributes } }) => {
-        this.props.modalURLHandler(attributes.js.value)
-        this.props.modalTogle()
+
+export const ImageGalleryItem = ({ modalURLHandler, modalTogle, largeImageURL, webformatURL }) => {
+    const onImgClick = ({ target: { attributes } }) => {
+        modalURLHandler(attributes.js.value)
+        modalTogle()
     }
-    render() {
-        const { webformatURL, largeImageURL } = this.props
-        return (
-            <li className={css.ImageGalleryItem}>
-                <img onClick={this.onImgClick} js={largeImageURL} src={webformatURL} className={css.ImageGalleryItemImage} alt="" />
-            </li>
-        )
-    }
+    return (
+        <li className={css.ImageGalleryItem}>
+            <img onClick={onImgClick} js={largeImageURL} src={webformatURL} className={css.ImageGalleryItemImage} alt="" />
+        </li>
+    )
 }
 
 ImageGalleryItem.propTypes = {

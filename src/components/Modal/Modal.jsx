@@ -1,30 +1,33 @@
-import React, { Component } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import css from "./Modal.module.css"
 import propTypes from 'prop-types';
+import Notiflix from 'notiflix';
 
-export class Modal extends Component {
-    componentDidMount = () => {
-        document.addEventListener('keydown', this.onESK)
-    }
-    componentWillUnmount = () => {
-        document.removeEventListener('keydown', this.onESK)
-    }
+export const Modal = ({ modalTogle, modalURL }) => {
 
-    onESK = (e) => {
+    const onESK = useCallback((e) => {
         if (e.code === 'Escape') {
-            this.props.modalTogle()
+            modalTogle()
         }
-    }
+    }, [modalTogle])
 
-    render() {
-        return (
-            <div onClick={this.props.modalTogle} className={css.Overlay}>
-                <div className={css.Modal}>
-                    <img src={this.props.modalURL} alt="modal" />
-                </div>
+    useEffect(() => {
+        Notiflix.Loading.remove(200)
+        document.addEventListener('keydown', onESK)
+        return () => {
+            document.removeEventListener('keydown', onESK)
+            Notiflix.Loading.remove(200)
+        }
+    }, [onESK])
+
+
+    return (
+        <div onClick={modalTogle} className={css.Overlay}>
+            <div className={css.Modal}>
+                <img src={modalURL} alt="modal" />
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 Modal.propTypes = {
